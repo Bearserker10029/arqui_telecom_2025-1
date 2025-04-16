@@ -11,7 +11,7 @@ if __name__ == '__main__':
 
     sock.connect(server_address)
 
-    msg = "Hola Mundo!"
+    msg = "20250001,17,14,10,4,9,17,12,17,11,12,10,20,2,15"
 
     sock.sendall(msg.encode("utf-8"))
     data = sock.recv(SOCK_BUFFER)
