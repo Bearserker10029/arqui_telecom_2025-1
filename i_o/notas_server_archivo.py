@@ -6,6 +6,31 @@ from notas_utils import calc_nota_final
 
 SOCK_BUFFER = 1024
 
+with open("notas.csv", "r") as f:
+    contenido = f.read()
+
+filas = contenido.split("\n")
+
+
+def busca_notas(codigo: str) -> list[int]:
+    """
+    Busca las notas correspondientes al codigo proporcionado en la base de datos de notas (archivo CSV)
+    :param codigo: string que representa al codigo a buscar
+    :returns: lista de enteros con las notas a encontrar
+    """
+    res = ""
+    for fila in filas:
+        if codigo in fila:
+            res = fila
+            break
+
+    if res == "":
+        return list()
+    
+    notas = [int(val) for val in res.split(",")][1:]
+
+    return notas
+
 
 if __name__ == '__main__':
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -32,9 +57,9 @@ if __name__ == '__main__':
                 if data:
                     #print(f"Recibi: {data}")
                     inicio = time.perf_counter()
-                    valores = data.decode("utf-8").split(",")
-                    valores = [int(valor) for valor in valores]
-                    nota_final = calc_nota_final(valores[1:])
+                    codigo = data.decode("utf-8")
+                    valores = busca_notas(codigo)
+                    nota_final = calc_nota_final(valores)
                     fin_cpu = time.perf_counter()
                     conn.sendall(str(nota_final).encode("utf-8"))
                     fin = time.perf_counter()

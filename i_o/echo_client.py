@@ -1,4 +1,6 @@
 import socket
+import time
+
 
 SOCK_BUFFER = 1024
 
@@ -11,11 +13,14 @@ if __name__ == '__main__':
 
     sock.connect(server_address)
 
-    msg = "20250001,17,14,10,4,9,17,12,17,11,12,10,20,2,15"
+    msg = "20250001"
 
+    inicio = time.perf_counter()
     sock.sendall(msg.encode("utf-8"))
     data = sock.recv(SOCK_BUFFER)
+    fin = time.perf_counter()
 
     sock.close()
 
     print(f"Recibi: {data}")
+    print(f"Tiempo total de operacion de E/S: {(fin - inicio):.6f} segundos")
