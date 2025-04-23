@@ -31,13 +31,10 @@ if __name__ == '__main__':
 
                 if data:
                     #print(f"Recibi: {data}")
-                    inicio = time.perf_counter()
                     valores = data.decode("utf-8").split(",")
                     valores = [int(valor) for valor in valores]
                     nota_final = calc_nota_final(valores[1:])
-                    fin_cpu = time.perf_counter()
                     conn.sendall(str(nota_final).encode("utf-8"))
-                    fin = time.perf_counter()
                 else:
                     print(f"No hay mas datos")
                     break
@@ -48,6 +45,3 @@ if __name__ == '__main__':
         finally:
             print("Cerrando la conexion")
             conn.close()
-            print(f"Total de operacion: {(fin - inicio):.6f} segundos")
-            print(f"Total de CPU: {(fin_cpu - inicio):.6f} segundos")
-            print(f"Total de transmision: {(fin - fin_cpu):.6f} segundos")

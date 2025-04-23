@@ -1,35 +1,10 @@
 import socket
 import time
 
-from notas_utils import calc_nota_final
+from notas_utils import calc_nota_final, busca_notas
 
 
 SOCK_BUFFER = 1024
-
-with open("notas.csv", "r") as f:
-    contenido = f.read()
-
-filas = contenido.split("\n")
-
-
-def busca_notas(codigo: str) -> list[int]:
-    """
-    Busca las notas correspondientes al codigo proporcionado en la base de datos de notas (archivo CSV)
-    :param codigo: string que representa al codigo a buscar
-    :returns: lista de enteros con las notas a encontrar
-    """
-    res = ""
-    for fila in filas:
-        if codigo in fila:
-            res = fila
-            break
-
-    if res == "":
-        return list()
-    
-    notas = [int(val) for val in res.split(",")][1:]
-
-    return notas
 
 
 if __name__ == '__main__':
@@ -66,6 +41,8 @@ if __name__ == '__main__':
                 else:
                     print(f"No hay mas datos")
                     break
+        except IndexError:
+            print("No existen notas par el alumno")
         except ConnectionResetError:
             print("El cliente cerro la conexion de manera abrupta")
         except KeyboardInterrupt:
@@ -73,6 +50,3 @@ if __name__ == '__main__':
         finally:
             print("Cerrando la conexion")
             conn.close()
-            print(f"Total de operacion: {(fin - inicio):.6f} segundos")
-            print(f"Total de CPU: {(fin_cpu - inicio):.6f} segundos")
-            print(f"Total de transmision: {(fin - fin_cpu):.6f} segundos")
