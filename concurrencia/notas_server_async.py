@@ -1,4 +1,5 @@
 import asyncio
+from random import randint
 
 from notas_utils import calc_nota_final, busca_notas
 
@@ -11,6 +12,7 @@ async def handle_client(reader: asyncio.StreamReader, writer: asyncio.StreamWrit
     try:
         while True:
             data = await reader.read(SOCK_BUFFER)
+            await asyncio.sleep(randint(3, 7))
             if data:
                 codigo = data.decode("utf-8")
                 valores = busca_notas(codigo)
