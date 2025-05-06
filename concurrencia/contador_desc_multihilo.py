@@ -3,8 +3,13 @@ import time
 
 
 N = 100_000_000
+contador_hilo = 0
+
 
 def contador(n: int):
+    global contador_hilo
+    contador_hilo += 1
+    print(f"Numero de hilos en paralelo: {contador_hilo}")
     while n > 0:
         n -= 1
 
